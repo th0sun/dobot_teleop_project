@@ -11,7 +11,7 @@ find_package(rclpy REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
-# 2. Generate Messages (จุดสำคัญ!)
+# 2. Generate Messages
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/TargetPose.msg"
   DEPENDENCIES std_msgs
@@ -19,5 +19,15 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 
 # 3. Export
 ament_export_dependencies(rosidl_default_runtime)
+
+# --- [แก้ตรงนี้ครับ] ---
+# เปลี่ยนจาก COPY Directory เป็น Install PROGRAMS (ระบุชื่อไฟล์ชัดๆ)
+# เพื่อบังคับให้มันเป็น Executable (สีเขียว) แน่นอน 100%
+install(PROGRAMS
+  scripts/dobot_driver.py
+  scripts/mg400_interface.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+# --------------------
 
 ament_package()
