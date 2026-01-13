@@ -1,4 +1,0 @@
-mg400_msgs/User user
----
-bool result
-int32 error_id

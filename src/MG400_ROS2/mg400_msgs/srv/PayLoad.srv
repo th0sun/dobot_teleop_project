@@ -1,5 +1,0 @@
-float64 weight
-float64 inertia
----
-bool result
-int32 error_id

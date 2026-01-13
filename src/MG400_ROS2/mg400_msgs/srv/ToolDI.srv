@@ -1,4 +1,0 @@
-mg400_msgs/ToolDIIndex index
----
-uint8 result
-int32 error_id

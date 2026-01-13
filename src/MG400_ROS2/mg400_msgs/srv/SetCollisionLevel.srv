@@ -1,4 +1,0 @@
-mg400_msgs/CollisionLevel level
----
-bool result
-int32 error_id
