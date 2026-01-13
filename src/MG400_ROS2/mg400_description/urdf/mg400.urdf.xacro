@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="mg400">
+
+    <xacro:property name="MESH_BASE_LINK" value="mg400_description/meshes/base_link.dae"/>
+    <xacro:property name="MESH_LINK_1"    value="mg400_description/meshes/link1.dae"/>
+    <xacro:property name="MESH_LINK_2_1"  value="mg400_description/meshes/link2_1.dae"/>
+    <xacro:property name="MESH_LINK_2_2"  value="mg400_description/meshes/link2_2.dae"/>
+    <xacro:property name="MESH_LINK_3_1"  value="mg400_description/meshes/link3_1.dae"/>
+    <xacro:property name="MESH_LINK_3_2"  value="mg400_description/meshes/link3_2.dae"/>
+    <xacro:property name="MESH_LINK_4_1"  value="mg400_description/meshes/link4_1.dae"/>
+    <xacro:property name="MESH_LINK_4_2"  value="mg400_description/meshes/link4_2.dae"/>
+    <xacro:property name="MESH_LINK_4_3"  value="mg400_description/meshes/link4_3.dae"/>
+    <xacro:property name="MESH_LINK_5"    value="mg400_description/meshes/link5.dae"/>
+    <xacro:property name="MESH_FLANGE"    value="mg400_description/meshes/flange.dae"/>
+    <xacro:property name="MESH_WORKSPACE" value="mg400_description/meshes/workspace.dae"/>
+
+    <xacro:include filename="$(find mg400_description)/urdf/mg400.xacro" />
+
+    <xacro:arg name="prefix" default="" />
+    <xacro:arg name="use_arm" default="True" />
+    <xacro:arg name="workspace_visible" default="false" />
+
+    <link name="$(arg prefix)arm_frame_link_offset" />
+
+    <xacro:mg400
+            parent="$(arg prefix)arm_frame_link_offset"
+            prefix="$(arg prefix)"
+            workspace_visible="$(arg workspace_visible)">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:mg400>
+
+</robot>
