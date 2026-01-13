@@ -26,6 +26,7 @@ ament_export_dependencies(rosidl_default_runtime)
 install(PROGRAMS
   scripts/dobot_driver.py
   scripts/mg400_interface.py
+  scripts/tcp_receiver.py
   DESTINATION lib/${PROJECT_NAME}
 )
 # --------------------
