@@ -5,15 +5,20 @@ from launch.substitutions import Command
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    # --- 1. หาไฟล์โมเดล (Xacro) ---
-    description_pkg = get_package_share_directory('mg400_description')
-    xacro_file = os.path.join(description_pkg, 'urdf', 'mg400.urdf.xacro')
-
-    # --- 2. แปลง Xacro เป็น URDF ---
+    # ========================================================================
+    # 1. SETUP PATHS
+    # ========================================================================
+    pkg_share = get_package_share_directory('mg400_description')
+    xacro_file = os.path.join(pkg_share, 'urdf', 'mg400.urdf.xacro')
+    # แปลง Xacro เป็น URDF
     robot_description_content = Command(['xacro ', xacro_file])
 
-    # --- 3. Robot State Publisher (คนคำนวณข้อต่อ) ---
-    robot_state_publisher_node = Node(
+    # ========================================================================
+    # 2. DEFINE NODES
+    # ========================================================================
+    
+    # [Node 1] Robot State Publisher: คำนวณ TF และรูปร่างหุ่น 3D
+    node_robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
@@ -21,32 +26,31 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_description_content}]
     )
 
-    # --- 4. RViz2 (คนแสดงผล) ---
-    rviz_node = Node(
+    # [Node 2] Joint State Manager: คนกลางที่รับค่าจาก Driver มากระจายต่อ
+    node_joint_state_manager = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_manager',
+        output='screen',
+        parameters=[{
+            'source_list': ['/dobot_driver/joint_states'], # รอรับค่าจากข้อ 2
+            'rate': 30
+        }]
+    )
+
+    # [Node 3] RViz2: หน้าจอแสดงผล
+    node_rviz = Node(
         package='rviz2',
         executable='rviz2',
         name='rviz2',
         output='screen'
     )
 
-    # --- 5. ระบบของเรา (Driver + Receiver) ---
-    driver_node = Node(
-        package='dobot_teleop',
-        executable='dobot_driver.py',
-        name='dobot_driver',
-        output='screen'
-    )
-    
-    receiver_node = Node(
-        package='dobot_teleop',
-        executable='tcp_receiver.py',
-        name='tcp_receiver',
-        output='screen'
-    )
-
+    # ========================================================================
+    # 3. RETURN LAUNCH DESCRIPTION
+    # ========================================================================
     return LaunchDescription([
-        robot_state_publisher_node,
-        rviz_node,
-        driver_node,
-        receiver_node
+        node_robot_state_publisher,
+        node_joint_state_manager,
+        node_rviz
     ])
