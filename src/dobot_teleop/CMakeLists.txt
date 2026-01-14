@@ -35,4 +35,12 @@ install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
 )
 
+# สั่งให้ติดตั้งไฟล์ Python ไปไว้ในที่ที่ ROS2 มองเห็น
+install(PROGRAMS
+  controllers/slider_control.py
+  controllers/test_animator.py
+  controllers/command_processor.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_package()
